@@ -33,7 +33,7 @@ class AccountsUtils(object):
 
   google_comment = '# Added by Google'
 
-  def __init__(self, logger, groups=None, remove=False):
+  def __init__(self, logger, groups=None, remove=False, home_permissions='750'):
     """Constructor.
 
     Args:
@@ -52,6 +52,7 @@ class AccountsUtils(object):
     self.groups.append(self.google_sudoers_group)
     self.groups = list(filter(self._GetGroup, self.groups))
     self.remove = remove
+    self.home_permissions = int(home_permissions, 8)
 
   def _GetGroup(self, group):
     """Retrieve a Linux group.
@@ -179,7 +180,7 @@ class AccountsUtils(object):
     home_dir = pw_entry.pw_dir
     ssh_dir = os.path.join(home_dir, '.ssh')
     file_utils.SetPermissions(
-        home_dir, mode=0o750, uid=uid, gid=gid, mkdir=True)
+        home_dir, mode=self.home_permissions, uid=uid, gid=gid, mkdir=True)
     file_utils.SetPermissions(
         ssh_dir, mode=0o700, uid=uid, gid=gid, mkdir=True)
 

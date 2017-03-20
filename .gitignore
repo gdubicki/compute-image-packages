@@ -9,6 +9,7 @@
 build
 *.deb
 *.rpm
+venv
 
 # emacs backup files
 *.*~

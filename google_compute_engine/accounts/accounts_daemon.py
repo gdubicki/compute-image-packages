@@ -36,7 +36,7 @@ class AccountsDaemon(object):
   invalid_users = set()
   user_ssh_keys = {}
 
-  def __init__(self, groups=None, remove=False, debug=False):
+  def __init__(self, groups=None, remove=False, debug=False, home_permissions='750'):
     """Constructor.
 
     Args:
@@ -49,7 +49,7 @@ class AccountsDaemon(object):
         name='google-accounts', debug=debug, facility=facility)
     self.watcher = metadata_watcher.MetadataWatcher(logger=self.logger)
     self.utils = accounts_utils.AccountsUtils(
-        logger=self.logger, groups=groups, remove=remove)
+        logger=self.logger, groups=groups, remove=remove, home_permissions=home_permissions)
     try:
       with file_utils.LockFile(LOCKFILE):
         self.logger.info('Starting Google Accounts daemon.')
@@ -224,6 +224,7 @@ def main():
     AccountsDaemon(
         groups=instance_config.GetOptionString('Accounts', 'groups'),
         remove=instance_config.GetOptionBool('Accounts', 'deprovision_remove'),
+        home_permissions=instance_config.GetOptionString('Accounts', 'home_permissions'),
         debug=bool(options.debug))
 
 
