@@ -10,6 +10,7 @@ build
 *.deb
 *.rpm
 venv
+.eggs
 
 # emacs backup files
 *.*~
